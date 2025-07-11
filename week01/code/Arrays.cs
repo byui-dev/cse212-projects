@@ -93,6 +93,6 @@ public class Program
 
         // Step 4:  Modify the original list in place
         data.Clear();
-        data.AddRange(rotated);      
+        data.AddRange(rotated);
     }
 }
