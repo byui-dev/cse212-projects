@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 public static class Arrays
 {
     /// <summary>
@@ -39,60 +36,62 @@ public static class Arrays
     }
 }
 
-// Entry point for the program
-public class Program
+public static void Main()
 {
-    public static void Main()
-    {
-        // Example usage of the MultiplesOf function
-        double[] result = Arrays.MultiplesOf(7, 5);
-
-        // Display the result
-        Console.WriteLine("Multiples of 7: " + string.Join(", ", result));
-    }
-
-    /// Rotate the 'data' to the right by the 'amount'.  For example, if the data is 
-    /// List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9} and an amount is 3 then the list after the function runs should be 
-    /// List<int>{7, 8, 9, 1, 2, 3, 4, 5, 6}.  The value of amount will be in the range of 1 to data.Count, inclusive.
-    ///
-    /// Because a list is dynamic, this function will modify the existing data list rather than returning a new list.
-    /// </summary>
-    // Example usage of RotateListRight
-    // List<int> data = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-    // Rotate right by 3 positions
-    // RotateListRight(data, 3);
-
-    // Display the rotated list
-    // Console.WriteLine("Rotated List: " + string.Join(", ", data));
-
-    /// <summary>
-    /// Rotates the given list to the right by the specified amount.
-    /// Modifies the list in place
-    /// </summary>
-    /// <param name="data">The list to rotate</param>
-    /// <param name="amount">The number of positions to rotate</param>
-    public static void RotateListRight(List<int> data, int amount)
-    {
-        // Step 1: Validate the input 'amount'
-        if (data == null || data.Count == 0)
-        {
-            Console.WriteLine("The list is empty or null. No rotation performed.");
-            return;
-        }
-
-        // Step 2: Normalize the amount
-        amount = amount % data.Count;
-        if (amount == 0)
-            return;
-
-        // Step 3: Rearrange the elements using GetRange and AddRange
-        // Split the list into two parts: last 'amount' elements, and the rest
-        List<int> rotated = data.GetRange(data.Count - amount, amount); // tail
-        rotated.AddRange(data.GetRange(0, data.Count - amount));
-
-        // Step 4:  Modify the original list in place
-        data.Clear();
-        data.AddRange(rotated);
-    }
+    // Example usage of MultiplesOf
+    double[] result = Arrays.MultiplesOf(7, 5);
+    Console.WriteLine("Multiples of 7: " + string.Join(", ", result));
 }
+
+
+
+
+
+
+///    <summary> 
+/// Rotate the 'data' to the right by the 'amount'.  For example, if the data is 
+/// List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9} and an amount is 3 then the list after the function runs should be 
+/// List<int>{7, 8, 9, 1, 2, 3, 4, 5, 6}.  The value of amount will be in the range of 1 to data.Count, inclusive.
+///
+/// Because a list is dynamic, this function will modify the existing data list rather than returning a new list.
+/// </summary>
+// Example usage of RotateListRight
+// List<int> data = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+// Rotate right by 3 positions
+// RotateListRight(data, 3);
+
+// Display the rotated list
+// Console.WriteLine("Rotated List: " + string.Join(", ", data));
+
+/// <summary>
+/// Rotates the given list to the right by the specified amount.
+/// Modifies the list in place
+/// </summary>
+/// <param name="data">The list to rotate</param>
+/// <param name="amount">The number of positions to rotate</param>
+
+public static void RotateListRight(List<int> data, int amount)
+{
+    // Step 1: Validate the input 'amount'
+    if (data == null || data.Count == 0)
+    {
+        Console.WriteLine("The list is empty or null. No rotation performed.");
+        return;
+    }
+
+    // Step 2: Normalize the amount
+    amount = amount % data.Count;
+    if (amount == 0)
+        return;
+
+    // Step 3: Rearrange the elements using GetRange and AddRange
+    // Split the list into two parts: last 'amount' elements, and the rest
+    List<int> rotated = data.GetRange(data.Count - amount, amount); // tail
+    rotated.AddRange(data.GetRange(0, data.Count - amount));
+
+    // Step 4:  Modify the original list in place
+    data.Clear();
+    data.AddRange(rotated);
+}
+
