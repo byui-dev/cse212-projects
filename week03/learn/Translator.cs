@@ -24,7 +24,14 @@ public class Translator
     /// <returns>fixed array of divisors</returns>
     public void AddWord(string fromWord, string toWord)
     {
-        // ADD YOUR CODE HERE
+        _words[fromWord] = toWord;
+        // If the word already exists, it will be replaced with the new translation
+        // If you want to prevent overwriting, you can check if it exists first:    
+        // if (!_words.ContainsKey(fromWord))
+        // {
+        //     _words[fromWord] = toWord;
+        // }
+        Console.WriteLine($"Added translation: {fromWord} -> {toWord}");
     }
 
     /// <summary>
@@ -34,7 +41,15 @@ public class Translator
     /// <returns>The translated word or "???" if no translation is available</returns>
     public string Translate(string fromWord)
     {
-        // ADD YOUR CODE HERE
+        if (_words.TryGetValue(fromWord, out var toWord))
+        {
+            return toWord;
+        }
+        else
+        {
+            Console.WriteLine($"No translation found for: {fromWord}");
+            return "???"; // Return "???" if no translation is available
+        }
         return "";
     }
 }
