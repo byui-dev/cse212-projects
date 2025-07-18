@@ -46,13 +46,13 @@ public class PriorityQueueTests
     public void TestPriorityQueue_3()
     {
         var priorityQueue = new PriorityQueue();
-        priorityQueue.Enqueue("Item 1", -1);
-        priorityQueue.Enqueue("Item 2", 0);
-        priorityQueue.Enqueue("Item 3", 1);
+        priorityQueue.Enqueue("Scarf", -1);
+        priorityQueue.Enqueue("Watch", 0);
+        priorityQueue.Enqueue("Handkerchief", 1);
 
-        Assert.AreEqual("Item 1", priorityQueue.Dequeue());
-        Assert.AreEqual("Item 2", priorityQueue.Dequeue());
-        Assert.AreEqual("Item 3", priorityQueue.Dequeue());
+        Assert.AreEqual("Scarf", priorityQueue.Dequeue());
+        Assert.AreEqual("Watch", priorityQueue.Dequeue());
+        Assert.AreEqual("Handkerchief", priorityQueue.Dequeue());
         Assert.IsTrue(priorityQueue.IsEmpty(), "Priority queue should be empty after dequeuing all items.");
     }
 
