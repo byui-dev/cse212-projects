@@ -59,8 +59,8 @@ public class PriorityQueueTests
     }
 
     [TestMethod]
-    //Scenario: 
-    //Expected result:
+    //Scenario: Error excpetion shall be thrown if the queue is empty
+    //Expected result: InvalidOperationException with a message of "The queue is empty."
 
     public void TestPriorityQueue_4()
     {
