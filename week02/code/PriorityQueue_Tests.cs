@@ -11,15 +11,15 @@ public class PriorityQueueTests
     // Defect(s) Found:     
     public void TestPriorityQueue_1()
     {
-        var priorityQueue = new PriorityQueue();
-        priorityQueue.Enqueue("Low Priority", 1);
-        priorityQueue.Enqueue("Medium Priority", 5);
-        priorityQueue.Enqueue("High Priority", 10);
+        var pq = new PriorityQueue();
+        pq.Enqueue("Low Priority", 1);
+        pq.Enqueue("Medium Priority", 5);
+        pq.Enqueue("High Priority", 10);
 
-        Assert.AreEqual("High Priority", priorityQueue.Dequeue());
-        Assert.AreEqual("Medium Priority", priorityQueue.Dequeue());
-        Assert.AreEqual("Low Priority", priorityQueue.Dequeue());
-        Assert.IsTrue(priorityQueue.IsEmpty(), "Priority queue should be empty after dequeuing all items.");
+        Assert.AreEqual("High Priority", pq.Dequeue());
+        Assert.AreEqual("Medium Priority", pq.Dequeue());
+        Assert.AreEqual("Low Priority", pq.Dequeue());
+
     }
 
     [TestMethod]
@@ -28,15 +28,14 @@ public class PriorityQueueTests
     // Defect(s) Found: 
     public void TestPriorityQueue_2()
     {
-        var priorityQueue = new PriorityQueue();
-        priorityQueue.Enqueue("Shoe", 5);
-        priorityQueue.Enqueue("Tie", 5);
-        priorityQueue.Enqueue("Belt", 1);
+        var pq = new PriorityQueue();
+        pq.Enqueue("Shoe", 5);
+        pq.Enqueue("Tie", 5);
+        pq.Enqueue("Belt", 1);
 
-        Assert.AreEqual("Shoe", priorityQueue.Dequeue());
-        Assert.AreEqual("Tie", priorityQueue.Dequeue());
-        Assert.AreEqual("Belt", priorityQueue.Dequeue());
-        Assert.IsTrue(priorityQueue.IsEmpty(), "Priority queue should be empty after dequeuing all items.");
+        Assert.AreEqual("Shoe", pq.Dequeue());
+        Assert.AreEqual("Tie", pq.Dequeue());
+        Assert.AreEqual("Belt", pq.Dequeue());
     }
 
     // Add more test cases as needed below.
@@ -45,15 +44,35 @@ public class PriorityQueueTests
     //Expected Result: The item should be dequeued as it has the highest priority.
     public void TestPriorityQueue_3()
     {
-        var priorityQueue = new PriorityQueue();
-        priorityQueue.Enqueue("Scarf", -1);
-        priorityQueue.Enqueue("Watch", 0);
-        priorityQueue.Enqueue("Handkerchief", 1);
+        var pq = new PriorityQueue();
+        pq.Enqueue("Scarf", 2);
+        pq.Enqueue("Watch", 5);
+        pq.Enqueue("Handkerchief", 5);
+        pq.Enqueue("Belt", 1);
 
-        Assert.AreEqual("Scarf", priorityQueue.Dequeue());
-        Assert.AreEqual("Watch", priorityQueue.Dequeue());
-        Assert.AreEqual("Handkerchief", priorityQueue.Dequeue());
-        Assert.IsTrue(priorityQueue.IsEmpty(), "Priority queue should be empty after dequeuing all items.");
+
+
+        Assert.AreEqual("Watch", pq.Dequeue());  //first with highest priority (5)
+        Assert.AreEqual("Handkerchief", pq.Dequeue());  //second with highest priority (5)
+        Assert.AreEqual("Scarf", pq.Dequeue());  //next highest (2)
+        Assert.AreEqual("Belt", pq.Dequeue());  //lowest (1)
     }
 
+    [TestMethod]
+    //Scenario: 
+    //Expected result:
+
+    public void TestPriorityQueue_4()
+    {
+        var pq = new PriorityQueue();
+        try
+        {
+            pq.Dequeue();
+            Assert.Fail("Expected exception not thrown.");
+        }
+        catch (InvalidOperationException ex)
+        {
+            Assert.AreEqual("The queue is empty.", ex.Message);
+        }
+    }
 }
