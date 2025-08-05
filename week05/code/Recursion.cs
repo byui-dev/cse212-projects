@@ -55,12 +55,8 @@ public static class Recursion
         }
         for (int i = 0; i < letters.Length; i++)
         {
-            // Choose the letter at index i
-            char currentLetter = letters[i];
-            // Create a new string without the chosen letter
-            string remainingLetters = letters.Substring(0, i) + letters.Substring(i + 1);
-            // Recur with the chosen letter added to the word and remaining letters
-            PermutationsChoose(results, remainingLetters, size, word + currentLetter);
+            string remaining = letters[..i] + letters[(i + 1)..];
+            PermutationsChoose(results, remaining, size, word + letters[i]);
         }
     }
 
@@ -120,15 +116,14 @@ public static class Recursion
 
         // TODO Start Problem 3
         // Initialize the dictionary for memoization if it is null
-        if (remember == null)
-        {
-            remember = new Dictionary<int, decimal>();
-        }
+        if (remember == null) remember = new Dictionary<int, decimal>();
+        if (s < 0) return 0; // If s is negative, no ways to climb
+        if (s == 0) return 1; // One way to stay at the ground level
+
         // Check if the result for this step has already been computed
         if (remember.ContainsKey(s))
-        {
             return remember[s];
-        }
+
         // If not, compute the result recursively
         decimal result = CountWaysToClimb(s - 1, remember) +
                          CountWaysToClimb(s - 2, remember) +
@@ -136,6 +131,7 @@ public static class Recursion
 
         // Store the computed result in the dictionary
         remember[s] = result;
+
         return result;
     }
 
@@ -156,32 +152,15 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
-        if (string.IsNullOrEmpty(pattern))
+        int index = pattern.IndexOf('*');
+        if (index == -1)
         {
-            results.Add(string.Empty);
+            results.Add(pattern);
             return;
         }
-        // If the first character is not a wildcard, continue with the next character
-        if (pattern[0] != '*')
-        {
-            WildcardBinary(pattern[1..], results);
-        }
-        else
-        {
-            // If the first character is a wildcard, branch into two possibilities: 0 and 1
-            WildcardBinary('0' + pattern[1..], results);
-            WildcardBinary('1' + pattern[1..], results);
-        }
-        // If the first character is not a wildcard, prepend it to all results
-        if (pattern[0] != '*')
-        {
-            var currentResults = new List<string>(results);
-            results.Clear();
-            foreach (var result in currentResults)
-            {
-                results.Add(pattern[0] + result);
-            }
-        }
+
+        WildcardBinary(pattern.Substring(0, index) + '0' + pattern.Substring(index + 1), results);
+        WildcardBinary(pattern.Substring(0, index) + '1' + pattern.Substring(index + 1), results);
     }
 
     /// <summary>
@@ -201,34 +180,34 @@ public static class Recursion
 
         // TODO Start Problem 5
         // ADD CODE HERE
-        // Check if the current position is out of bounds or a wall
-        if (x < 0 || y < 0 || x >= maze.Width || y >= maze.Height || maze.IsWall(x, y))
-        {
-            return; // Invalid position, return
-        }
-        // Check if we have already visited this cell
-        if (currPath.Contains((x, y)))
-        {
-            return; // Already visited, return
-        }
-        // Add the current position to the path
         currPath.Add((x, y));
 
-        // Check if we have reached the end of the maze
+        // If we reached the end of the maze, convert the path to a string and return it
         if (maze.IsEnd(x, y))
         {
-            // Convert the current path to a string and add it to results
-            results.Add(string.Join(" -> ", currPath.Select(p => $"({p.Item1},{p.Item2})")));
-            currPath.RemoveAt(currPath.Count - 1); // Backtrack
+            results.Add("<List>{" + string.Join(", ", currPath.Select(p => $"({p.Item1},{p.Item2})")) + "}");
             return;
         }
 
-        // Explore all four possible directions: right, down, left, up
-        SolveMaze(results, maze, x + 1, y, currPath); // Right
-        SolveMaze(results, maze, x, y + 1, currPath); // Down
-        SolveMaze(results, maze, x - 1, y, currPath); // Left
-        SolveMaze(results, maze, x, y - 1, currPath); // Up
+        // Explore 4 directions: up, down, left, right
+        var directions = new (int, int)[]
+        {
+            (0, -1), // Up
+            (0, 1),  // Down
+            (-1, 0), // Left
+            (1, 0)   // Right
+        };
 
-        // Backtrack: remove the current position from the path
-        currPath.RemoveAt(currPath.Count - 1);
+        foreach (var (dx, dy) in directions)
+        {
+            int newX = x + dx;
+            int newY = y + dy;
+
+            // Check if the move is valid
+            if (maze.IsValidMove(currPath, newX, newY))
+            {
+                // Recursively call SolveMaze for the next position
+                SolveMaze(results, maze, newX, newY, new List<(int, int)>(currPath));
+            }
+        }
     }
