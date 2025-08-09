@@ -180,34 +180,24 @@ public static class Recursion
 
         // TODO Start Problem 5
         // ADD CODE HERE
-        currPath.Add((x, y));
+        var newPath = new List<(int, int)>(currPath) { (x, y) };
 
-        // If we reached the end of the maze, convert the path to a string and return it
         if (maze.IsEnd(x, y))
         {
-            results.Add("<List>{" + string.Join(", ", currPath.Select(p => $"({p.Item1},{p.Item2})")) + "}");
+            results.Add("<List>{" + string.Join(", ", newPath.Select(p => $"({p.Item1},{p.Item2})")) + "}");
             return;
         }
 
-        // Explore 4 directions: up, down, left, right
-        var directions = new (int, int)[]
-        {
-            (0, -1), // Up
-            (0, 1),  // Down
-            (-1, 0), // Left
-            (1, 0)   // Right
-        };
+        var directions = new (int, int)[] { (0, -1), (0, 1), (-1, 0), (1, 0) };
 
         foreach (var (dx, dy) in directions)
         {
             int newX = x + dx;
             int newY = y + dy;
 
-            // Check if the move is valid
-            if (maze.IsValidMove(currPath, newX, newY))
+            if (maze.IsValidMove(newPath, newX, newY))
             {
-                // Recursively call SolveMaze for the next position
-                SolveMaze(results, maze, newX, newY, new List<(int, int)>(currPath));
+                SolveMaze(results, maze, newX, newY, newPath);
             }
         }
     }
