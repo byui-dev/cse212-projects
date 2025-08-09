@@ -180,11 +180,12 @@ public static class Recursion
 
         // TODO Start Problem 5
         // ADD CODE HERE
-        var newPath = new List<(int, int)>(currPath) { (x, y) };
+        currPath.Add((x, y));
 
         if (maze.IsEnd(x, y))
         {
-            results.Add("<List>{" + string.Join(", ", newPath.Select(p => $"({p.Item1},{p.Item2})")) + "}");
+            results.Add("<List>{" + string.Join(", ", currPath.Select(p => $"({p.Item1},{p.Item2})")) + "}");
+            currPath.RemoveAt(currPath.Count - 1); // Backtrack
             return;
         }
 
@@ -195,9 +196,12 @@ public static class Recursion
             int newX = x + dx;
             int newY = y + dy;
 
-            if (maze.IsValidMove(newPath, newX, newY))
+            if (maze.IsValidMove(currPath, newX, newY))
             {
-                SolveMaze(results, maze, newX, newY, newPath);
+                SolveMaze(results, maze, newX, newY, currPath);
             }
         }
+
+
+        currPath.RemoveAt(currPath.Count - 1); // Backtrack
     }
