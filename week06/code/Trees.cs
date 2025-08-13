@@ -16,6 +16,67 @@ public static class Trees
         return bst;
     }
 
+    public void TraverseBackward(Action<int> visit)
+    {
+        TraverseBackwardRec(root, visit);
+    }
+
+    private void TraverseBackwardRec(Node node, Action<int> visit)
+    {
+        if (node == null)
+            return;
+
+        TraverseBackwardRec(node.Right, visit);
+        visit(node.Value);
+        TraverseBackwardRec(node.Left, visit);
+    }
+
+    public void Insert(int value)
+    {
+        root = InsertRec(root, value);
+    }
+
+    private Node InsertRec(Node root, int value)
+    {
+        if (root == null)
+        {
+            root = new Node(value);
+            return root;
+        }
+
+        if (value < root.Value)
+        {
+            root.Left = InsertRec(root.Left, value);
+        }
+        else if (value > root.Value)
+        {
+            root.Right = InsertRec(root.Right, value);
+        }
+
+        return root;
+    }
+
+    public class Node
+    {
+        public int Value;
+        public Node Left;
+        public Node Right;
+
+        //Recursive contains function
+        public bool Contains(int value)
+        {
+            if (value == Value)
+                return true;
+            else if (value < Value && Left != null)
+                return Left.Contains(value);
+            else if (value > Value && Right != null)
+                return Right.Contains(value);
+            else
+                return false;
+        }
+    }
+
+
     /// <summary>
     /// This function will attempt to insert the item in the middle of 'sortedNumbers' into
     /// the 'bst' tree. The middle is determined by using indices represented by 'first' and
@@ -49,5 +110,20 @@ public static class Trees
     private static void InsertMiddle(int[] sortedNumbers, int first, int last, BinarySearchTree bst)
     {
         // TODO Start Problem 5
+        if (first > last)
+        {
+            return; // Base case: no more elements to insert
+        }
+
+        int mid = (first + last) / 2; // Find the middle index
+        bst.Insert(sortedNumbers[mid]); // Insert the middle element into the BST
+
+        // Recursively insert the left and right halves
+        InsertMiddle(sortedNumbers, first, mid - 1, bst);
+        InsertMiddle(sortedNumbers, mid + 1, last, bst);
     }
 }
+
+
+
+
